@@ -15,6 +15,7 @@ function BookingForm() {
         comment: '',
     });
 
+    // устанавливаем значение из выпадающего меню
     const handleSelectChange = (selectedOption, actionMeta) => {
         const { name, value } = actionMeta;
         setBookingData(prevBookingData => ({
@@ -23,15 +24,35 @@ function BookingForm() {
         }));
     };
 
+    // функция для выбора даты 
     const handleDateChange = (date) => {
         setBookingData({ ...bookingData, date });
     };
 
+    //открыть календарь по клику на иконку календаря
+    const datePickerRef = useRef(null);
+    const handleDateIconClick = () => {
+        datePickerRef.current.setFocus();
+    };
+    // установить максимально доступную дату бронирования
+    const lastDayOfYear = new Date(new Date().getFullYear(), 11, 31);
+
+    // функция для ввода текста в поле комментария
+    const handleCommentChange = (event) => {
+        const { value } = event.target;
+        setBookingData(prevBookingData => ({
+            ...prevBookingData,
+            comment: value,
+        }));
+    };
+
+    // отправка данных формы
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(JSON.stringify(bookingData));
     };
 
+    // очищение всех полей формы
     const handleClear = () => {
         setBookingData({
             tower: '',
@@ -43,6 +64,7 @@ function BookingForm() {
         });
     };
 
+    // задать значения для выпадающего меню
     const towerOptions = [
         { value: 'A', label: 'Башня А' },
         { value: 'B', label: 'Башня Б' },
@@ -62,21 +84,14 @@ function BookingForm() {
         }
     ));
 
-    const timeOptions = [...Array(20 - 9).keys()].
-        flatMap((hour) => [`${hour + 9}:00`, `${hour + 9}:30`])
+    const timeOptions = [...Array(20 - 9).keys()]
+        .flatMap((hour) => [`${hour + 9}:00`, `${hour + 9}:30`])
         .map((time) => ({
             value: time,
             label: time
         }));
 
-    const lastDayOfYear = new Date(new Date().getFullYear(), 11, 31);
-
-    const datePickerRef = useRef(null);
-
-    const handleDateIconClick = () => {
-        datePickerRef.current.setFocus();
-    };
-
+    // установить стили для полей react-select 
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
@@ -86,6 +101,7 @@ function BookingForm() {
             borderRadius: "4px",
             boxShadow: "none",
             borderColor: state.hasValue ? "#000" : "#a9a2a2",
+            transition: "box-shadow .3s ease-in-out",
             "&:hover": {
                 boxShadow: "0 0 5px #a9a2a2",
                 cursor: "pointer"
@@ -93,13 +109,21 @@ function BookingForm() {
             paddingLeft: "30px",
             caretColor: "transparent",
         }),
+        menuList: (provided) => ({
+            ...provided,
+            padding: "10px",
+            maxHeight: "170px",
+            overflowY: "auto"
+        }),
         option: (provided, state) => ({
             ...provided,
             color: state.isSelected ? "#fff" : "#444",
             backgroundColor: state.isSelected ? "#0074d9" : "#fff",
             "&:hover": {
-                backgroundColor: state.isSelected ? "#0074d9" : "#f1f1f1"
-            }
+                backgroundColor: state.isSelected ? "#0074d9" : "#f1f1f1",
+                cursor: "pointer"
+            },
+            cursor: "pointer"
         }),
         dropdownIndicator: (provided) => ({
             ...provided,
@@ -130,7 +154,7 @@ function BookingForm() {
                     options={towerOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите башню"
+                    placeholder="Выберите башню А или Б"
                     required
                 />
 
@@ -143,7 +167,7 @@ function BookingForm() {
                     options={floorOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите этаж"
+                    placeholder="Выберите этаж с 3 по 27"
                     isRequired
                 />
                 <label htmlFor="room"
@@ -155,7 +179,7 @@ function BookingForm() {
                     options={roomOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите номер комнаты"
+                    placeholder="Выберите номер комнаты с 1 по 10"
                     isRequired
                 />
 
@@ -189,21 +213,28 @@ function BookingForm() {
                     options={timeOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите время"
+                    placeholder="Выберите время с 09:00 до 19:30"
                     isRequired
                 />
 
                 <label htmlFor="comment"
                     className="booking__label">Комментарий:</label>
                 <textarea
+                    className="booking__comment-input"
                     id="comment"
+                    name="comment"
                     value={bookingData.comment}
-                    className="booking__input"
-                    onChange={(e) => handleSelectChange("comment", e.target.value)}
+                    onChange={handleCommentChange}
+                    placeholder="Что еще нам следует знать о вашей брони?"
+                    maxLength={200}
                 />
 
-                <button type="submit">Отправить</button>
-                <button type="button" onClick={handleClear}>
+                <button
+                    className="booking__button"
+                    type="submit">Отправить</button>
+                <button
+                    className="booking__button"
+                    type="button" onClick={handleClear}>
                     Очистить
                 </button>
             </form>
