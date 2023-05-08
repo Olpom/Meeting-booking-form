@@ -1,0 +1,99 @@
+.booking {
+    min-width: 544px;
+    min-height: 564px;
+    margin: 40px auto;
+    font-family: "Manrope", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.booking__form {
+    box-shadow: 5px 5px 70px rgba(173, 185, 197, .5);
+    border-radius: 16px;
+    padding: 20px 72px 40px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.booking__title {
+    margin: 20px auto 10px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 29px;
+    max-width: 300px;
+}
+
+.booking__label {
+    text-align: left;
+    padding: 10px 0 0;
+}
+
+.booking__input {
+    color: #a9a2a2;
+    font-size: 13px;
+    line-height: 18px;
+    cursor: pointer;
+    border: 1px solid #a9a2a2;
+    border-radius: 4px;
+    height: 34px;
+    min-width: 344px;
+    box-shadow: none;
+}
+
+.booking__input:valid {
+    color: black;
+    border: 1px solid black;
+}
+
+.booking__input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+.booking__input:not(.booking__icon-container:hover + .booking__input):hover {
+    outline: none;
+    box-shadow: 0 0 5px #a9a2a2;
+}
+
+.booking__input:focus {
+    outline: none;
+}
+
+.booking__container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.booking__container:hover .booking__input:not(.booking__icon-container:hover + .booking__input) {
+    box-shadow: 0 0 5px #a9a2a2;
+}
+
+.booking__icon-container {
+    position: absolute;
+    top: 70%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+}
+
+.booking__icon {
+    display: block;
+    font-size: 1rem;
+    color: #a9a2a2;
+    border-left: 1px solid rgb(204 204 204);
+    padding: 2px 2px 3px 11px;
+    z-index: 1;
+}
+
+.booking__icon:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.booking__icon:hover ~ .booking__input:not(.booking__icon-container:hover + .booking__input) {
+    box-shadow: 0 0 5px #a9a2a2;
+}
+  
