@@ -1,11 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { FaCalendarAlt } from 'react-icons/fa';
 import "react-datepicker/dist/react-datepicker.css";
 import './BookingForm.css';
+import {
+    towerOptions,
+    floorOptions,
+    roomOptions,
+    timeOptions,
+    lastDayOfYear
+} from '../../utils/constants';
+import InfoToolTip from '../InfoToolTip/InfoToolTip';
 
 function BookingForm() {
+
+    const [showPopup, setShowPopup] = useState(false);
+
     const [bookingData, setBookingData] = useState({
         tower: '',
         floor: '',
@@ -16,44 +27,46 @@ function BookingForm() {
     });
 
     // устанавливаем значение из выпадающего меню
-    const handleSelectChange = (selectedOption, actionMeta) => {
+    const handleSelectChange = useCallback((selectedOption, actionMeta) => {
         const { name, value } = actionMeta;
         setBookingData(prevBookingData => ({
             ...prevBookingData,
             [name]: value,
         }));
-    };
+    }, []);
 
     // функция для выбора даты 
-    const handleDateChange = (date) => {
-        setBookingData({ ...bookingData, date });
-    };
+    const handleDateChange = useCallback((date) => {
+        setBookingData(prevBookingData => ({ 
+            ...prevBookingData, 
+            date 
+        }));
+    }, []);
 
     //открыть календарь по клику на иконку календаря
     const datePickerRef = useRef(null);
-    const handleDateIconClick = () => {
+    const handleDateIconClick = useCallback(() => {
         datePickerRef.current.setFocus();
-    };
-    // установить максимально доступную дату бронирования
-    const lastDayOfYear = new Date(new Date().getFullYear(), 11, 31);
+    }, []);
 
     // функция для ввода текста в поле комментария
-    const handleCommentChange = (event) => {
+    const handleCommentChange = useCallback((event) => {
         const { value } = event.target;
         setBookingData(prevBookingData => ({
             ...prevBookingData,
             comment: value,
         }));
-    };
+    }, []);
 
     // отправка данных формы
-    const handleSubmit = (event) => {
+    const handleSubmit = useCallback((event) => {
         event.preventDefault();
-        console.log(JSON.stringify(bookingData));
-    };
-
+        setShowPopup(true);
+        console.log('Booking data:', bookingData);
+    }, [bookingData]);
+    
     // очищение всех полей формы
-    const handleClear = () => {
+    const handleClear = useCallback(() => {
         setBookingData({
             tower: '',
             floor: '',
@@ -62,34 +75,7 @@ function BookingForm() {
             time: '',
             comment: '',
         });
-    };
-
-    // задать значения для выпадающего меню
-    const towerOptions = [
-        { value: 'A', label: 'Башня А' },
-        { value: 'B', label: 'Башня Б' },
-    ];
-
-    const floorOptions = [...Array(25)].map((_, index) => (
-        {
-            value: `${index + 3}`,
-            label: `${index + 3}`
-        }
-    ));
-
-    const roomOptions = [...Array(10)].map((_, index) => (
-        {
-            value: `${index + 1}`,
-            label: `${index + 1}`
-        }
-    ));
-
-    const timeOptions = [...Array(20 - 9).keys()]
-        .flatMap((hour) => [`${hour + 9}:00`, `${hour + 9}:30`])
-        .map((time) => ({
-            value: time,
-            label: time
-        }));
+    }, []);
 
     // установить стили для полей react-select 
     const customStyles = {
@@ -168,7 +154,7 @@ function BookingForm() {
                     onChange={handleSelectChange}
                     styles={customStyles}
                     placeholder="Выберите этаж с 3 по 27"
-                    isRequired
+                    required
                 />
                 <label htmlFor="room"
                     className="booking__label">Переговорная:</label>
@@ -180,7 +166,7 @@ function BookingForm() {
                     onChange={handleSelectChange}
                     styles={customStyles}
                     placeholder="Выберите номер комнаты с 1 по 10"
-                    isRequired
+                    required
                 />
 
                 <div className="booking__container">
@@ -214,7 +200,7 @@ function BookingForm() {
                     onChange={handleSelectChange}
                     styles={customStyles}
                     placeholder="Выберите время с 09:00 до 19:30"
-                    isRequired
+                    required
                 />
 
                 <label htmlFor="comment"
@@ -238,6 +224,8 @@ function BookingForm() {
                     Очистить
                 </button>
             </form>
+            {showPopup && (<InfoToolTip isOpen={true} onClose={() => {
+            setShowPopup(false) }}/>)}
         </div>
     );
 };
