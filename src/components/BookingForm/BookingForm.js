@@ -10,22 +10,17 @@ function BookingForm() {
         tower: '',
         floor: '',
         room: '',
-        date: null,
+        date: '',
         time: '',
         comment: '',
     });
 
-    const handleInputChange = (name, value) => {
-        setBookingData(prevBookingData => (
-            {
-                ...prevBookingData,
-                [name]: value
-            }
-        ));
-    };
-
     const handleSelectChange = (selectedOption, actionMeta) => {
-        handleInputChange(actionMeta.name, selectedOption.value);
+        const { name, value } = actionMeta;
+        setBookingData(prevBookingData => ({
+            ...prevBookingData,
+            [name]: value,
+        }));
     };
 
     const handleDateChange = (date) => {
@@ -42,7 +37,7 @@ function BookingForm() {
             tower: '',
             floor: '',
             room: '',
-            date: null,
+            date: '',
             time: '',
             comment: '',
         });
@@ -67,12 +62,19 @@ function BookingForm() {
         }
     ));
 
+    const timeOptions = [...Array(20 - 9).keys()].
+        flatMap((hour) => [`${hour + 9}:00`, `${hour + 9}:30`])
+        .map((time) => ({
+            value: time,
+            label: time
+        }));
+
     const lastDayOfYear = new Date(new Date().getFullYear(), 11, 31);
 
     const datePickerRef = useRef(null);
 
     const handleDateIconClick = () => {
-      datePickerRef.current.setFocus();
+        datePickerRef.current.setFocus();
     };
 
     const customStyles = {
@@ -87,7 +89,9 @@ function BookingForm() {
             "&:hover": {
                 boxShadow: "0 0 5px #a9a2a2",
                 cursor: "pointer"
-            }
+            },
+            paddingLeft: "30px",
+            caretColor: "transparent",
         }),
         option: (provided, state) => ({
             ...provided,
@@ -106,9 +110,9 @@ function BookingForm() {
                 cursor: "pointer"
             }
         }),
-        singleValue: (provided, { selectProps: { value } }) => ({
+        singleValue: (provided, state) => ({
             ...provided,
-            color: value !== '' ? "#000" : "#a9a2a2"
+            color: state.hasValue !== '' ? "#000" : "#a9a2a2"
         })
     };
 
@@ -122,7 +126,7 @@ function BookingForm() {
                 <Select
                     id="tower"
                     name="tower"
-                    value={towerOptions.filter(option => option.value === bookingData.tower)}
+                    value={bookingData.tower}
                     options={towerOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
@@ -135,26 +139,26 @@ function BookingForm() {
                 <Select
                     id="floor"
                     name="floor"
-                    value={floorOptions.filter(option => option.value === bookingData.floor)}
+                    value={bookingData.floor}
                     options={floorOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
                     placeholder="Выберите этаж"
-                    required
+                    isRequired
                 />
-
                 <label htmlFor="room"
                     className="booking__label">Переговорная:</label>
                 <Select
                     id="room"
                     name="room"
-                    value={roomOptions.filter(option => option.value === bookingData.room)}
+                    value={bookingData.room}
                     options={roomOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
                     placeholder="Выберите номер комнаты"
-                    required
+                    isRequired
                 />
+
                 <div className="booking__container">
                     <label htmlFor="date"
                         className="booking__label">Дата:</label>
@@ -165,25 +169,28 @@ function BookingForm() {
                         dateFormat="dd.MM.yyyy"
                         minDate={new Date()}
                         maxDate={lastDayOfYear}
-                        required
-                        showPopperArrow={false} 
+                        showPopperArrow={false}
                         ref={datePickerRef}
+                        placeholderText="DD.MM.YYYY"
+                        required
                     />
                     <div className="booking__icon-container">
-                        <FaCalendarAlt className="booking__icon" 
-                        onClick={handleDateIconClick}
+                        <FaCalendarAlt className="booking__icon"
+                            onClick={handleDateIconClick}
                         />
                     </div></div>
 
                 <label htmlFor="time"
                     className="booking__label">Время:</label>
-                <input
-                    className="booking__input"
+                <Select
                     id="time"
-                    type="time"
+                    name="time"
                     value={bookingData.time}
-                    onChange={(e) => handleInputChange("time", e.target.value)}
-                    required
+                    options={timeOptions}
+                    onChange={handleSelectChange}
+                    styles={customStyles}
+                    placeholder="Выберите время"
+                    isRequired
                 />
 
                 <label htmlFor="comment"
@@ -192,8 +199,7 @@ function BookingForm() {
                     id="comment"
                     value={bookingData.comment}
                     className="booking__input"
-                    onChange={(e) => handleInputChange("comment", e.target.value)}
-                    required
+                    onChange={(e) => handleSelectChange("comment", e.target.value)}
                 />
 
                 <button type="submit">Отправить</button>

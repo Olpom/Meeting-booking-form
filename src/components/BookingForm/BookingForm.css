@@ -42,6 +42,8 @@
     height: 34px;
     min-width: 344px;
     box-shadow: none;
+    caret-color: transparent;
+    text-align: center;
 }
 
 .booking__input:valid {
@@ -93,7 +95,6 @@
     cursor: pointer;
 }
 
-.booking__icon:hover ~ .booking__input:not(.booking__icon-container:hover + .booking__input) {
+.booking__icon:hover~.booking__input:not(.booking__icon-container:hover + .booking__input) {
     box-shadow: 0 0 5px #a9a2a2;
 }
-  
