@@ -37,9 +37,9 @@ function BookingForm() {
 
     // функция для выбора даты 
     const handleDateChange = useCallback((date) => {
-        setBookingData(prevBookingData => ({ 
-            ...prevBookingData, 
-            date 
+        setBookingData(prevBookingData => ({
+            ...prevBookingData,
+            date
         }));
     }, []);
 
@@ -65,7 +65,7 @@ function BookingForm() {
         setShowPopup(true);
         handleClear();
     }, [bookingData]);
-    
+
     // очищение всех полей формы
     const handleClear = useCallback(() => {
         setBookingData({
@@ -86,7 +86,6 @@ function BookingForm() {
             fontSize: "13px",
             maxWidth: "350px",
             borderRadius: "4px",
-            boxShadow: "none",
             borderColor: state.hasValue ? "#000" : "#a9a2a2",
             transition: "box-shadow .3s ease-in-out",
             "&:hover": {
@@ -99,7 +98,7 @@ function BookingForm() {
         menuList: (provided) => ({
             ...provided,
             padding: "10px",
-            maxHeight: "170px",
+            maxHeight: "150px",
             overflowY: "auto"
         }),
         option: (provided, state) => ({
@@ -127,6 +126,21 @@ function BookingForm() {
         })
     };
 
+    const customStylesWithGrid = {
+        ...customStyles,
+        menuList: (provided) => ({
+            ...provided,
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gridTemplateRows: "repeat(6, auto)",
+            gap: "0",
+            maxHeight: "150px",
+            overflowY: "auto",
+            padding: "0",
+            margin: "0"
+        })
+    };
+
     return (
         <div className="booking">
             <form onSubmit={handleSubmit}
@@ -141,7 +155,7 @@ function BookingForm() {
                     options={towerOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите башню А или Б"
+                    placeholder="Башня А или Б"
                     required
                 />
 
@@ -153,8 +167,8 @@ function BookingForm() {
                     value={bookingData.floor}
                     options={floorOptions}
                     onChange={handleSelectChange}
-                    styles={customStyles}
-                    placeholder="Выберите этаж с 3 по 27"
+                    styles={customStylesWithGrid}
+                    placeholder="Этаж с 3 по 27"
                     required
                 />
                 <label htmlFor="room"
@@ -165,8 +179,8 @@ function BookingForm() {
                     value={bookingData.room}
                     options={roomOptions}
                     onChange={handleSelectChange}
-                    styles={customStyles}
-                    placeholder="Выберите номер комнаты с 1 по 10"
+                    styles={customStylesWithGrid}
+                    placeholder="Номер комнаты с 1 по 10"
                     required
                 />
 
@@ -200,7 +214,7 @@ function BookingForm() {
                     options={timeOptions}
                     onChange={handleSelectChange}
                     styles={customStyles}
-                    placeholder="Выберите время с 09:00 до 19:30"
+                    placeholder="с 09:00 до 19:30"
                     required
                 />
 
@@ -226,7 +240,8 @@ function BookingForm() {
                 </button>
             </form>
             {showPopup && (<InfoToolTip isOpen={true} onClose={() => {
-            setShowPopup(false) }}/>)}
+                setShowPopup(false)
+            }} />)}
         </div>
     );
 };
