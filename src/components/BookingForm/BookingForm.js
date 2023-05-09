@@ -61,8 +61,9 @@ function BookingForm() {
     // отправка данных формы
     const handleSubmit = useCallback((event) => {
         event.preventDefault();
-        setShowPopup(true);
         console.log('Booking data:', bookingData);
+        setShowPopup(true);
+        handleClear();
     }, [bookingData]);
     
     // очищение всех полей формы
