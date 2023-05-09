@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/meeting-booking-form/static/css/main.8033e32c.css",
-    "main.js": "/meeting-booking-form/static/js/main.707022df.js",
+    "main.js": "/meeting-booking-form/static/js/main.5b931d6a.js",
     "static/js/787.abb322b2.chunk.js": "/meeting-booking-form/static/js/787.abb322b2.chunk.js",
     "static/media/Manrope-Medium.woff": "/meeting-booking-form/static/media/Manrope-Medium.4e55dc20921a95ef83f4.woff",
     "static/media/Manrope-Regular.woff": "/meeting-booking-form/static/media/Manrope-Regular.2046a49b5fa996c43f44.woff",
@@ -14,11 +14,11 @@
     "index.html": "/meeting-booking-form/index.html",
     "static/media/button_сlose.svg": "/meeting-booking-form/static/media/button_сlose.da07145c9bfe0db70001.svg",
     "main.8033e32c.css.map": "/meeting-booking-form/static/css/main.8033e32c.css.map",
-    "main.707022df.js.map": "/meeting-booking-form/static/js/main.707022df.js.map",
+    "main.5b931d6a.js.map": "/meeting-booking-form/static/js/main.5b931d6a.js.map",
     "787.abb322b2.chunk.js.map": "/meeting-booking-form/static/js/787.abb322b2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8033e32c.css",
-    "static/js/main.707022df.js"
+    "static/js/main.5b931d6a.js"
   ]
 }
